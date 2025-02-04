@@ -21,4 +21,9 @@ class MedicoService
 
         return $query->get();
     }
+
+    public function createMedico(array $data): Medico
+    {
+        return Medico::create($data);
+    }
 }

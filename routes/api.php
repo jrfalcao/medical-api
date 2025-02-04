@@ -34,3 +34,4 @@ Route::get('/cidades/{id_cidade}/medicos', [CidadeController::class, 'listarMedi
 
 /* MedicoController */
 Route::get('medicos', [MedicoController::class, 'index']);
+Route::middleware('auth:api')->post('medicos', [MedicoController::class, 'store']);
