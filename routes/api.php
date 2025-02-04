@@ -32,4 +32,4 @@ Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout'])
 Route::get('cidades', [CidadeController::class, 'index']);
 
 /* MedicoController */
-Route::get('cidades', [MedicoController::class, 'index']);
+Route::get('medicos', [MedicoController::class, 'index']);

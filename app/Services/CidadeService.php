@@ -11,8 +11,14 @@ class CidadeService
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function listarCidades()
+    public function listarCidades($nome = null)
     {
-        return Cidade::all();
+        $query = Cidade::orderBy('nome');
+
+        if ($nome) {
+            $query->where('nome', 'LIKE', "%$nome%");
+        }
+
+        return $query->get();
     }
 }

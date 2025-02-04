@@ -11,8 +11,14 @@ class MedicoService
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function listarMedicos()
+    public function listarMedicos($nome = null)
     {
-        return Medico::all();
+        $query = Medico::orderBy('nome');
+
+        if ($nome) {
+            $query->where('nome', 'LIKE', "%$nome%");
+        }
+
+        return $query->get();
     }
 }

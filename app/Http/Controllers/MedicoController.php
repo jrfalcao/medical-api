@@ -9,19 +9,20 @@ class MedicoController extends Controller
 {
     protected $medicoService;
 
-    public function __construct(MedicoService $cidadeService)
+    public function __construct(MedicoService $medicoService)
     {
         $this->medicoService = $medicoService;
     }
 
     /**
-     * Exibir todas as cidades.
+     * Exibir todas os médicos.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $medico = $this->medicoService->listarMedicos();
-        return response()->json($medico);
+        $nome = $request->query('nome');
+        $medicos = $this->medicoService->listarMedicos($nome);
+        return response()->json($medicos);
     }
 }

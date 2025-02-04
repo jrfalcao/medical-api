@@ -19,9 +19,10 @@ class CidadeController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $cidades = $this->cidadeService->listarCidades();
+        $nome = $request->query('nome');
+        $cidades = $this->cidadeService->listarCidades($nome);
         return response()->json($cidades);
     }
 }
