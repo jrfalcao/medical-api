@@ -30,3 +30,4 @@ Route::middleware('auth:api')->get('/medicos/consultas', [ConsultaController::cl
 
 /* PacientesController */
 Route::middleware('auth:api')->post('/pacientes/{id_paciente}', [PacienteController::class, 'atualizar']);
+Route::middleware('auth:api')->post('/pacientes', [PacienteController::class, 'adicionar']);

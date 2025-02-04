@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AdicionarPacienteRequest;
 use App\Http\Requests\AtualizarPacienteRequest;
 use App\Services\PacienteService;
+use Illuminate\Http\JsonResponse;
 
 class PacienteController extends Controller
 {
@@ -23,5 +25,11 @@ class PacienteController extends Controller
         }
 
         return response()->json($paciente);
+    }
+
+    public function adicionar(AdicionarPacienteRequest $request): JsonResponse
+    {
+        $paciente = $this->pacienteService->adicionarPaciente($request->validated());
+        return response()->json($paciente, 201);
     }
 }

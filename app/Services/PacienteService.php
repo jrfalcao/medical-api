@@ -18,4 +18,13 @@ class PacienteService
 
         return $paciente;
     }
+
+    public function adicionarPaciente(array $dados): Paciente
+    {
+        return Paciente::create([
+            'nome' => $dados['nome'],
+            'celular' => $dados['celular'],
+            'cpf' => $dados['cpf'],
+        ]);
+    }
 }
