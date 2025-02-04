@@ -16,7 +16,7 @@ class MedicoService
         $query = Medico::orderBy('nome');
 
         if ($nome) {
-            $query->where('nome', 'LIKE', "%$nome%");
+            $query->whereRaw("REPLACE(REPLACE(nome, 'Dr. ', ''), 'Dra. ', '') LIKE ?", ["%$nome%"]);
         }
 
         return $query->get();

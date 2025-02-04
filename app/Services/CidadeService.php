@@ -21,4 +21,15 @@ class CidadeService
 
         return $query->get();
     }
+
+    public function listarMedicosPorCidade($cidadeId, $nome = null)
+    {
+        $query = Cidade::findOrFail($cidadeId)->medicos()->orderBy('nome');
+
+        if ($nome) {
+            $query->whereRaw("REPLACE(REPLACE(nome, 'Dr. ', ''), 'Dra. ', '') LIKE ?", ["%$nome%"]);
+        }
+
+        return $query->get();
+    }
 }

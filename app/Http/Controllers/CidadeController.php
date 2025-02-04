@@ -25,4 +25,11 @@ class CidadeController extends Controller
         $cidades = $this->cidadeService->listarCidades($nome);
         return response()->json($cidades);
     }
+
+    public function listarMedicos(Request $request, $cidadeId)
+    {
+        $nome = $request->query('nome');
+        $medicos = $this->cidadeService->listarMedicosPorCidade($cidadeId, $nome);
+        return response()->json($medicos);
+    }
 }
