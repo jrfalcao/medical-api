@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Medico extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'medicos';
 
@@ -17,10 +19,10 @@ class Medico extends Model
         'cidade_id',
         'created_up',
         'updated_up',
-        'deleted_up',
+        'deleted_at',
     ];
 
-    protected $dates = ['created_up', 'updated_up', 'deleted_up'];
+    protected $dates = ['created_up', 'updated_up', 'deleted_at'];
 
     public function cidade()
     {
