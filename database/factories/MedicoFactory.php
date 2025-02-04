@@ -21,9 +21,9 @@ class MedicoFactory extends Factory
             'nome' => $this->faker->name,
             'especialidade' => $this->faker->randomElement(['Cardiologia', 'Ortopedia', 'Dermatologia', 'Pediatria', 'Neurologia']),
             'cidade_id' => Cidade::factory(),
-            'created_up' => now(),
-            'updated_up' => now(),
-            'deleted_up' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
         ];
     }
 }

@@ -17,12 +17,9 @@ class Medico extends Model
         'nome',
         'especialidade',
         'cidade_id',
-        'created_up',
-        'updated_up',
-        'deleted_at',
     ];
 
-    protected $dates = ['created_up', 'updated_up', 'deleted_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     public function cidade()
     {

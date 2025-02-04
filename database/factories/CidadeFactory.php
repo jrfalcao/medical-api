@@ -19,9 +19,9 @@ class CidadeFactory extends Factory
         return [
             'nome' => $this->faker->city,
             'estado' => strtoupper($this->faker->lexify('??')),
-            'created_up' => now(),
-            'updated_up' => now(),
-            'deleted_up' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
         ];
     }
 }

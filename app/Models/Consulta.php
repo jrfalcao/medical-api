@@ -17,12 +17,9 @@ class Consulta extends Model
         'medico_id',
         'paciente_id',
         'data',
-        'created_up',
-        'updated_up',
-        'deleted_at',
     ];
 
-    protected $dates = ['data', 'created_up', 'updated_up', 'deleted_at'];
+    protected $dates = ['data', 'created_at', 'updated_at', 'deleted_at'];
 
     public function medico()
     {

@@ -22,9 +22,9 @@ class ConsultaFactory extends Factory
             'medico_id' => Medico::factory(),
             'paciente_id' => Paciente::factory(),
             'data' => $this->faker->dateTimeBetween('-1 year', '+1 year'),
-            'created_up' => now(),
-            'updated_up' => now(),
-            'deleted_up' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
         ];
     }
 }

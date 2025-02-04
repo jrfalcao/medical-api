@@ -17,12 +17,9 @@ class Paciente extends Model
         'nome',
         'cpf',
         'celular',
-        'created_up',
-        'updated_up',
-        'deleted_at',
     ];
 
-    protected $dates = ['created_up', 'updated_up', 'deleted_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     public function consultas()
     {

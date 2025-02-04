@@ -20,9 +20,9 @@ class PacienteFactory extends Factory
             'nome' => $this->faker->name,
             'cpf' => $this->faker->numerify('###.###.###-##'), // CPF formatado
             'celular' => $this->faker->phoneNumber,
-            'created_up' => now(),
-            'updated_up' => now(),
-            'deleted_up' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
         ];
     }
 }
