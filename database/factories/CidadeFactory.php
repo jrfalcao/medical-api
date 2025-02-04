@@ -17,7 +17,11 @@ class CidadeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nome' => $this->faker->city,
+            'estado' => strtoupper($this->faker->lexify('??')),
+            'created_up' => now(),
+            'updated_up' => now(),
+            'deleted_up' => null,
         ];
     }
 }

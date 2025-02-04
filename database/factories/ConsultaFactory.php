@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Medico;
+use App\Models\Paciente;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,12 @@ class ConsultaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'medico_id' => Medico::factory(),
+            'paciente_id' => Paciente::factory(),
+            'data' => $this->faker->dateTimeBetween('-1 year', '+1 year'),
+            'created_up' => now(),
+            'updated_up' => now(),
+            'deleted_up' => null,
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Cidade;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,12 @@ class MedicoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nome' => $this->faker->name,
+            'especialidade' => $this->faker->randomElement(['Cardiologia', 'Ortopedia', 'Dermatologia', 'Pediatria', 'Neurologia']),
+            'cidade_id' => Cidade::factory(),
+            'created_up' => now(),
+            'updated_up' => now(),
+            'deleted_up' => null,
         ];
     }
 }

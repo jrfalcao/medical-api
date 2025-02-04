@@ -17,7 +17,12 @@ class PacienteFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nome' => $this->faker->name,
+            'cpf' => $this->faker->numerify('###.###.###-##'), // CPF formatado
+            'celular' => $this->faker->phoneNumber,
+            'created_up' => now(),
+            'updated_up' => now(),
+            'deleted_up' => null,
         ];
     }
 }
