@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CidadeController;
+use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\MedicoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,3 +36,7 @@ Route::get('/cidades/{id_cidade}/medicos', [CidadeController::class, 'listarMedi
 /* MedicoController */
 Route::get('medicos', [MedicoController::class, 'index']);
 Route::middleware('auth:api')->post('medicos', [MedicoController::class, 'store']);
+
+/* ConsultaController */
+Route::middleware('auth:api')->post('/medicos/consulta', [ConsultaController::class, 'store']);
+Route::middleware('auth:api')->get('/medicos/consultas', [ConsultaController::class, 'listar']);
