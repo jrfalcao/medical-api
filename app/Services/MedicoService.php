@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Models\Cidade;
+use App\Models\Medico;
 
-class CidadeService
+class MedicoService
 {
     /**
-     * Listar todas as cidades.
+     * Listar todas os médicos.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function listarCidades()
+    public function listarMedicos()
     {
-        return Cidade::all();
+        return Medico::all();
     }
 }

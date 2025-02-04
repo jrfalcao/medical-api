@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CidadeController;
+use App\Http\Controllers\MedicoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,4 +31,5 @@ Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout'])
 /* CidadeController */
 Route::get('cidades', [CidadeController::class, 'index']);
 
-
+/* MedicoController */
+Route::get('cidades', [MedicoController::class, 'index']);
