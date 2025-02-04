@@ -17,9 +17,14 @@ class Consulta extends Model
         'medico_id',
         'paciente_id',
         'data',
+        'realizada',
     ];
 
     protected $dates = ['data', 'created_at', 'updated_at', 'deleted_at'];
+
+    protected $casts = [
+        'realizada' => 'boolean',
+    ];
 
     public function medico()
     {

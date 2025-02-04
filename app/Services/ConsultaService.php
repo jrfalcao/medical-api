@@ -22,7 +22,7 @@ class ConsultaService
         return $query->get();
     }
 
-    public function listar($data = null, $medico_id = null)
+    public function listar($data = null, $medicoId = null)
     {
         $query = Consulta::orderBy('data', 'desc');
 
@@ -30,8 +30,8 @@ class ConsultaService
             $query->whereDate('data', '=', $data);
         }
 
-        if ($medico_id) {
-            $query->where('medico_id', '=', $medico_id);
+        if ($medicoId) {
+            $query->where('medico_id', '=', $medicoId);
         }
 
         return $query->get();
@@ -40,5 +40,26 @@ class ConsultaService
     public function createConsulta(array $data): Consulta
     {
         return Consulta::create($data);
+    }
+
+    public function listarPacientesDoMedico($medicoId, $filtro)
+    {
+        $query = Consulta::where('medico_id', $medicoId)
+            ->with('paciente')
+            ->orderBy('data', 'asc');
+
+        if (!empty($filtro['apenas-agendadas']) && $filtro['apenas-agendadas'] == true) {
+            $query->where('realizada', false);
+        }
+
+        if (!empty($filtro['nome'])) {
+            $query->whereHas('paciente', function ($q) use ($filtro) {
+                $q->where('nome', 'like', '%' . $filtro['nome'] . '%');
+            });
+        }
+
+        return $query->get()->map(function ($consulta) {
+            return $consulta->paciente;
+        })->unique('id')->values();
     }
 }

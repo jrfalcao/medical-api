@@ -36,7 +36,10 @@ Route::get('/cidades/{id_cidade}/medicos', [CidadeController::class, 'listarMedi
 /* MedicoController */
 Route::get('medicos', [MedicoController::class, 'index']);
 Route::middleware('auth:api')->post('medicos', [MedicoController::class, 'store']);
+Route::middleware('auth:api')->get('/medicos/{id_medico}/pacientes', [MedicoController::class, 'listarPacientes']);
 
 /* ConsultaController */
 Route::middleware('auth:api')->post('/medicos/consulta', [ConsultaController::class, 'store']);
 Route::middleware('auth:api')->get('/medicos/consultas', [ConsultaController::class, 'listar']);
+
+

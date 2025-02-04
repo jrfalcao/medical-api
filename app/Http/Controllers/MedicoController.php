@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ListarPacientesRequest;
 use App\Http\Requests\MedicoRequest;
+use App\Services\ConsultaService;
 use App\Services\MedicoService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,10 +31,23 @@ class MedicoController extends Controller
         return response()->json($medicos);
     }
 
-
     public function store(MedicoRequest $request): JsonResponse
     {
         $medico = $this->medicoService->createMedico($request->validated());
         return response()->json($medico, Response::HTTP_CREATED);
+    }
+
+    public function listarPacientes($id_medico, ListarPacientesRequest $request, ConsultaService $consultaService): JsonResponse
+    {
+        $apenasAgendadas = filter_var(request('apenas-agendadas'), FILTER_VALIDATE_BOOLEAN);
+        $nome = $request->query('nome');
+
+        $filtros = [
+            'apenas-agendadas' =>$apenasAgendadas, 'nome' => $nome
+        ];
+
+        $pacientes = $consultaService->listarPacientesDoMedico($id_medico, $filtros);
+
+        return response()->json($pacientes);
     }
 }
