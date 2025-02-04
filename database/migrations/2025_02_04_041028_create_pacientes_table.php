@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('pacientes', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('telefone');
+            $table->string('cpf', 20)->unique()->nullable(false);
+            $table->string('celular');
             $table->timestamps();
         });
     }
