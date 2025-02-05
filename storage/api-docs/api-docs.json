@@ -1,0 +1,830 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "MedicalAPI",
+        "description": "Documentação da API do MedicalAPI",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api",
+            "description": "Ambiente de desenvolvimento"
+        }
+    ],
+    "paths": {
+        "/api/cidades": {
+            "get": {
+                "tags": [
+                    "Cidades"
+                ],
+                "summary": "Listar cidades",
+                "description": "Retorna uma lista de cidades. Pode ser filtrado pelo nome da cidade.",
+                "operationId": "listarCidades",
+                "parameters": [
+                    {
+                        "name": "nome",
+                        "in": "query",
+                        "description": "Nome da cidade para filtrar",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de cidades retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Cidade"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cidades/{id_cidade}/medicos": {
+            "get": {
+                "tags": [
+                    "Cidades"
+                ],
+                "summary": "Listar médicos por cidade",
+                "description": "Retorna uma lista de médicos de uma determinada cidade. Pode ser filtrado pelo nome do médico.",
+                "operationId": "listarMedicosPorCidade",
+                "parameters": [
+                    {
+                        "name": "id_cidade",
+                        "in": "path",
+                        "description": "ID da cidade",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "nome",
+                        "in": "query",
+                        "description": "Nome do médico para filtrar",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de médicos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Medico"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cidade não encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cidade não encontrada"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/medicos/consultas": {
+            "get": {
+                "tags": [
+                    "Consultas"
+                ],
+                "summary": "Listar consultas",
+                "description": "Retorna uma lista de consultas, podendo ser filtrada por data e pelo ID do médico.",
+                "operationId": "listarConsultas",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "query",
+                        "description": "Filtrar consultas por data (formato Y-m-d)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "medico_id",
+                        "in": "query",
+                        "description": "Filtrar consultas pelo ID do médico",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de consultas retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Consulta"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/medicos/consulta": {
+            "post": {
+                "tags": [
+                    "Consultas"
+                ],
+                "summary": "Agendar consulta",
+                "description": "Cria um novo agendamento de consulta médica. Apenas usuários autenticados podem utilizar este recurso.",
+                "operationId": "criarConsulta",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "medico_id",
+                                    "paciente_id",
+                                    "data"
+                                ],
+                                "properties": {
+                                    "medico_id": {
+                                        "description": "ID do médico",
+                                        "type": "integer"
+                                    },
+                                    "paciente_id": {
+                                        "description": "ID do paciente",
+                                        "type": "integer"
+                                    },
+                                    "data": {
+                                        "description": "Data da consulta (Y-m-d H:i:s)",
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Consulta agendada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Consulta"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos"
+                    },
+                    "401": {
+                        "description": "Não autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/medicos": {
+            "get": {
+                "tags": [
+                    "Médicos"
+                ],
+                "summary": "Listar médicos",
+                "description": "Retorna uma lista de médicos cadastrados no sistema, podendo ser filtrado por nome.",
+                "operationId": "listarMedicos",
+                "parameters": [
+                    {
+                        "name": "nome",
+                        "in": "query",
+                        "description": "Filtrar médicos pelo nome",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de médicos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Medico"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Médicos"
+                ],
+                "summary": "Cadastrar médico",
+                "description": "Cria um novo médico no sistema. Apenas usuários autenticados podem utilizar este recurso.",
+                "operationId": "criarMedico",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nome",
+                                    "crm",
+                                    "especialidade"
+                                ],
+                                "properties": {
+                                    "nome": {
+                                        "description": "Nome completo do médico",
+                                        "type": "string",
+                                        "example": "João da Silva"
+                                    },
+                                    "crm": {
+                                        "description": "Número do CRM do médico",
+                                        "type": "string",
+                                        "example": "123456"
+                                    },
+                                    "especialidade": {
+                                        "description": "Especialidade do médico",
+                                        "type": "string",
+                                        "example": "Cardiologia"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Médico cadastrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Medico"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Dados inválidos"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Não autorizado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/medicos/{id_medico}/pacientes": {
+            "get": {
+                "tags": [
+                    "Médicos"
+                ],
+                "summary": "Listar pacientes de um médico",
+                "description": "Retorna todos os pacientes que possuem consultas agendadas e/ou realizadas com o médico especificado.\n     *      Os seguintes parâmetros podem ser enviados via query string para filtrar os resultados:\n     *      - `nome`: Filtra pacientes pelo nome (parcial ou completo).\n     *      - `apenas-agendadas`: Se `true`, retorna apenas consultas ainda não realizadas.\n     *      Exemplos:\n     *      - `/api/medicos/123/pacientes`\n     *      - `/api/medicos/123/pacientes?nome=joao`\n     *      - `/api/medicos/123/pacientes?nome=joao&apenas-agendadas=true",
+                "operationId": "listarPacientesDoMedico",
+                "parameters": [
+                    {
+                        "name": "id_medico",
+                        "in": "path",
+                        "description": "ID do médico",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "nome",
+                        "in": "query",
+                        "description": "Filtrar pacientes pelo nome (parcial ou completo)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "apenas-agendadas",
+                        "in": "query",
+                        "description": "Se true, retorna apenas consultas ainda não realizadas",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de pacientes retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Paciente"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Não autorizado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Médico não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Médico não encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/pacientes": {
+            "post": {
+                "tags": [
+                    "Pacientes"
+                ],
+                "summary": "Adiciona um novo paciente",
+                "description": "Cria um novo paciente no sistema. Apenas usuários autenticados podem acessar.",
+                "operationId": "adicionarPaciente",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nome",
+                                    "celular",
+                                    "cpf"
+                                ],
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "example": "João da Silva"
+                                    },
+                                    "celular": {
+                                        "type": "string",
+                                        "example": "5521971283586"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "example": "12345678901"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Paciente criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Paciente"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erro nos dados enviados"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/pacientes/{id_paciente}": {
+            "post": {
+                "tags": [
+                    "Pacientes"
+                ],
+                "summary": "Atualiza os dados de um paciente",
+                "description": "Este endpoint permite a atualização do nome e celular de um paciente existente. Apenas usuários autenticados podem acessar.",
+                "operationId": "atualizarPaciente",
+                "parameters": [
+                    {
+                        "name": "id_paciente",
+                        "in": "path",
+                        "description": "ID do paciente a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nome",
+                                    "celular"
+                                ],
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "example": "João Silva"
+                                    },
+                                    "celular": {
+                                        "type": "string",
+                                        "example": "5521998765432"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Paciente atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Paciente"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Paciente não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Paciente não encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Cidade": {
+                "properties": {
+                    "id": {
+                        "description": "ID da cidade",
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "nome": {
+                        "description": "Nome da cidade",
+                        "type": "string"
+                    },
+                    "estado": {
+                        "description": "UF do estado",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            },
+            "Consulta": {
+                "properties": {
+                    "id": {
+                        "description": "ID da consulta",
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "medico_id": {
+                        "description": "ID do médico",
+                        "type": "integer"
+                    },
+                    "paciente_id": {
+                        "description": "ID do paciente",
+                        "type": "integer"
+                    },
+                    "data": {
+                        "description": "Data da consulta (Y-m-d H:i:s)",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "deleted_at": {
+                        "description": "Data de exclusão",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            },
+            "Medico": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "nome": {
+                        "type": "string"
+                    },
+                    "especialidade": {
+                        "type": "string"
+                    },
+                    "cidade_id": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            },
+            "Paciente": {
+                "properties": {
+                    "id": {
+                        "description": "ID do paciente",
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "nome": {
+                        "description": "Nome do paciente",
+                        "type": "string"
+                    },
+                    "celular": {
+                        "description": "Celular do paciente",
+                        "type": "string"
+                    },
+                    "cpf": {
+                        "description": "CPF do paciente",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "deleted_at": {
+                        "description": "Data de exclusão",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Cidades",
+            "description": "Cidades"
+        },
+        {
+            "name": "Consultas",
+            "description": "Consultas"
+        },
+        {
+            "name": "Médicos",
+            "description": "Médicos"
+        },
+        {
+            "name": "Pacientes",
+            "description": "Pacientes"
+        }
+    ]
+}

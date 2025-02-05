@@ -1,66 +1,86 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# medical-api
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Passo a Passo para Configuração e Execução
 
-## About Laravel
+### 1. Pré-requisitos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Certifique-se de ter o [Docker](https://www.docker.com/get-started) instalado e em execução em sua máquina. O Laravel Sail utiliza o Docker para configurar o ambiente de desenvolvimento.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 2. Clonar o Repositório
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Abra o terminal e execute o seguinte comando para clonar o repositório:
 
-## Learning Laravel
+```bash
+git clone https://github.com/jrfalcao/medical-api.git
+cd medical-api
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 3. Copiar o Arquivo de Ambiente
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Duplique o arquivo `.env.example` e renomeie para `.env`:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+cp .env.example .env
+```
 
-## Laravel Sponsors
+### 4. Instalar as Dependências
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Utilize o Composer para instalar as dependências do projeto dentro do contêiner do Sail:
 
-### Premium Partners
+```bash
+./vendor/bin/sail composer install
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 5. Gerar a Chave da Aplicação
 
-## Contributing
+Gere a chave da aplicação Laravel:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+./vendor/bin/sail artisan key:generate
+```
 
-## Code of Conduct
+### 6. Iniciar o Ambiente com o Sail
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Inicie os contêineres do Sail:
 
-## Security Vulnerabilities
+```bash
+./vendor/bin/sail up -d
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 7. Executar as Migrações e Seeders
 
-## License
+Execute as migrações para criar as tabelas no banco de dados e os seeders para popular com dados iniciais:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+./vendor/bin/sail artisan migrate --seed
+```
+
+### 8. Gerar a Documentação do Swagger
+
+Caso a documentação do Swagger não tenha sido gerada, execute:
+
+```bash
+./vendor/bin/sail artisan l5-swagger:generate
+```
+
+### 9. Acessar a Documentação do Swagger
+
+Após a geração, a documentação do Swagger estará disponível em:
+[http://localhost/api/documentation](http://localhost/api/documentation)
+
+### 10. Testar os Endpoints
+
+Utilize ferramentas como [Postman](https://www.postman.com/) ou [Insomnia](https://insomnia.rest/) para testar os endpoints da API conforme documentado no Swagger.
+
+## Observações
+
+- Certifique-se de que as portas necessárias (como a 80 para o HTTP e 3306 para o MySQL) estejam disponíveis e não em uso por outros serviços em sua máquina.
+- Para parar os contêineres do Sail, execute:
+
+  ```bash
+  ./vendor/bin/sail down
+  ```
+
+- Para mais informações sobre o Laravel Sail, consulte a [documentação oficial](https://laravel.com/docs/11.x/sail).
+
+Seguindo esses passos, você deverá ser capaz de configurar e executar o projeto `medical-api` em seu ambiente local.
